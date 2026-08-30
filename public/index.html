@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script>(function(w,i,g){w[g]=w[g]||[];if(typeof w[g].push==='function')w[g].push(i)})
+(window,'AW-16959411921','google_tags_first_party');</script><script async src="/akgw/"></script>
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				gtag('set', 'developer_id.dYzg1YT', true);
+				gtag('config', 'AW-16959411921');
+			</script>
+			
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Whatsapp tool </title>
+<meta name="description" content="A focused WhatsApp consent sender dashboard." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#1e2157; --surface:#20204e; --surface-2:#29295f; --surface-3:#353575;
+  --accent:#7894ff; --accent-strong:#6d4bdb; --accent-soft:rgba(126,108,255,.18);
+  --danger:#f0446f; --danger-soft:rgba(240,68,111,.14);
+  --text:#f8f9ff; --text-2:#c4c8e7; --text-3:#9499c5; --border:rgba(255,255,255,.14);
+}
+body.light {
+  --bg:#eef2ff; --surface:#fff; --surface-2:#f6f7ff; --surface-3:#edf0ff;
+  --accent:#536dfe; --accent-strong:#7048d8; --accent-soft:#eef0ff;
+  --danger:#e93662; --danger-soft:#fff0f4;
+  --text:#20213a; --text-2:#68708e; --text-3:#9299b5; --border:#e4e7f5;
+}
+html,body { min-height:100%; }
+body {
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(135deg,#3c65e8 0%,#5b55dc 47%,#9c4dcc 100%);
+  background-attachment:fixed; color:var(--text); -webkit-font-smoothing:antialiased;
+  transition:color .25s ease,background .25s ease;
+}
+body:not(.light) {
+  background:linear-gradient(135deg,#0b1026 0%,#171336 48%,#24103b 100%);
+}
+.app { max-width:760px; margin:0 auto; padding:24px 20px 80px; }
+.brand { display:flex; align-items:center; gap:12px; }
+.brand-logo {
+  width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:21px; background:linear-gradient(135deg,#6a8cff,#7646d9);
+  box-shadow:0 10px 25px rgba(30,34,125,.3);
+}
+.brand-text h1 { color:#fff; font-size:18px; font-weight:800; letter-spacing:-.3px; line-height:1.3; }
+.brand-text p { margin-top:3px; color:rgba(255,255,255,.82); font-size:10px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; }
+.top-nav { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:18px; padding-bottom:16px; }
+.nav-tabs { display:flex; gap:10px; flex:1 1 240px; min-width:0; }
+.nav-action {
+  flex:1 1 auto; min-height:44px; padding:10px 18px; display:inline-flex; align-items:center; justify-content:center;
+  gap:7px; border:1px solid rgba(255,255,255,.28); border-radius:12px; background:rgba(255,255,255,.14);
+  color:#fff; font:700 13px Inter,sans-serif; cursor:pointer; transition:.2s; backdrop-filter:blur(10px);
+}
+.nav-action:hover:not(.active) { background:rgba(255,255,255,.24); }
+.nav-action.active { background:#fff; border-color:#fff; color:#4e52c9; box-shadow:0 8px 22px rgba(28,36,128,.22); }
+#themeToggle { flex:0 0 auto; padding:10px 14px; }
+.nav-status { display:inline-block; width:8px; height:8px; border-radius:50%; background:#c4c8e7; vertical-align:middle; }
+.nav-status.running { background:#4ade80; box-shadow:0 0 8px #4ade80; }
+.view { display:none; }
+.view.active { display:block; animation:fadeIn .25s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+.stepper { display:flex; align-items:center; justify-content:center; margin-bottom:24px; padding:10px 0 4px; }
+.step { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.step-circle {
+  width:38px; height:38px; border-radius:50%; border:2.5px solid rgba(255,255,255,.42); display:flex;
+  align-items:center; justify-content:center; font-size:15px; font-weight:800; color:rgba(255,255,255,.72);
+  background:rgba(255,255,255,.12); transition:.3s;
+}
+.step-label { font-size:10px; font-weight:800; letter-spacing:.6px; color:rgba(255,255,255,.72); text-transform:uppercase; }
+.step.active .step-circle { border-color:#fff; color:#fff; background:rgba(255,255,255,.2); }
+.step.active .step-label,.step.done .step-label { color:#fff; }
+.step.done .step-circle { border-color:#fff; background:#fff; color:#5c54d9; }
+.step-line { width:70px; height:2px; background:rgba(255,255,255,.32); margin:0 6px 22px; transition:.3s; }
+.step-line.done { background:#fff; }
+.card {
+  background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:28px;
+  margin-bottom:18px; box-shadow:0 16px 36px rgba(35,31,110,.18);
+}
+.card.locked,.card.setup-hidden { display:none!important; }
+.card-title { display:flex; align-items:center; gap:12px; }
+.card-title i {
+  width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:13px;
+  background:linear-gradient(135deg,#e7ecff,#eadfff); color:var(--accent-strong); font-size:16px;
+}
+.card-title h2 { font-size:20px; font-weight:800; letter-spacing:-.3px; }
+.card-sub { margin:9px 0 20px; font-size:13px; color:var(--text-2); line-height:1.55; }
+.field { margin-bottom:17px; }
+.field-label { display:block; font-size:13px; font-weight:700; color:var(--text); margin-bottom:7px; }
+.field-label.label-with-icon { display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
+.field-label i { color:var(--accent); width:16px; text-align:center; margin-top:2px; }
+.field-hint { margin:-2px 0 7px; font-size:11px; color:var(--text-2); line-height:1.5; }
+input[type=text],input[type=tel],input[type=number],input[type=file],textarea,select {
+  width:100%; min-height:44px; padding:11px 13px; background:var(--surface-2); border:1px solid var(--border);
+  border-radius:11px; color:var(--text); font:13px Inter,sans-serif; outline:none; transition:.2s;
+}
+textarea { min-height:145px; resize:vertical; line-height:1.6; }
+input::placeholder,textarea::placeholder { color:var(--text-3); }
+input:focus,textarea:focus,select:focus { border-color:var(--accent); box-shadow:0 0 0 4px rgba(83,109,254,.14); }
+input[type=file] { padding:9px; cursor:pointer; color:var(--text-2); }
+input[type=file]::file-selector-button {
+  margin-right:12px; padding:8px 14px; border:0; border-radius:8px; background:linear-gradient(135deg,#617eff,#734ddd);
+  color:#fff; font:800 12px Inter,sans-serif; cursor:pointer;
+}
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:9px; width:100%; min-height:48px;
+  padding:13px 22px; border:0; border-radius:12px; font:800 14px Inter,sans-serif; cursor:pointer; transition:.2s;
+}
+.btn:hover { transform:translateY(-1px); }
+.btn-primary { background:linear-gradient(135deg,#5f7fff,#7048d9); color:#fff; box-shadow:0 8px 18px rgba(91,78,211,.28); }
+.btn-danger { background:linear-gradient(135deg,#f45176,#d92d59); color:#fff; box-shadow:0 7px 16px rgba(217,45,89,.2); }
+.btn-outline {
+  display:inline-flex; align-items:center; justify-content:center; gap:7px; width:auto; min-height:38px; padding:8px 16px;
+  border:1px solid var(--border); border-radius:11px; background:var(--surface-2); color:var(--text);
+  font:700 12px Inter,sans-serif; cursor:pointer; transition:.2s;
+}
+.btn-outline:hover { border-color:var(--accent); color:var(--accent-strong); background:var(--accent-soft); }
+.btn:disabled,.btn-outline:disabled { opacity:.55; cursor:not-allowed; transform:none; }
+.fetch-groups-btn { width:100%; min-height:44px; margin-top:8px; font-size:13px; }
+.pairing-box {
+  display:none; margin-top:17px; padding:20px 16px; text-align:center; border:1px dashed var(--accent);
+  border-radius:14px; background:var(--accent-soft);
+}
+.pairing-box.show { display:block; }
+.pairing-hint { font-size:12px; color:var(--text-2); line-height:1.5; }
+.pairing-code-row { display:flex; align-items:center; justify-content:center; gap:8px; margin:12px 0; }
+.pairing-code { margin:0; font-size:26px; font-weight:900; letter-spacing:5px; color:var(--accent-strong); word-break:break-all; }
+.copy-code-btn { width:auto; min-height:32px; padding:6px 10px; border-radius:9px; font-size:11px; }
+.pairing-wait { margin-top:12px; font-size:12px; font-weight:700; color:var(--text-2); display:flex; align-items:center; justify-content:center; gap:8px; }
+.spinner { width:16px; height:16px; border:2px solid rgba(148,163,184,.28); border-top-color:currentColor; border-radius:50%; display:inline-block; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.accordion { padding:22px 24px; }
+.how-to-card { background:linear-gradient(135deg,#dfe9ff,#ebe2ff); border-color:rgba(116,91,220,.16); }
+body:not(.light) .how-to-card { background:linear-gradient(135deg,#1c2348,#2a1f4c); border-color:rgba(132,148,255,.24); }
+.accordion-head { width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; background:none; border:0; padding:0; cursor:pointer; font:inherit; text-align:left; }
+.accordion-title { font-size:15px; font-weight:800; color:#3e48a5; }
+.accordion-chevron { color:#634ed4; transition:.25s; }
+.accordion.open .accordion-chevron { transform:rotate(180deg); }
+.how-list { display:none; list-style:none; counter-reset:guide; margin-top:14px; }
+.accordion.open .how-list { display:block; }
+.how-list li { counter-increment:guide; display:flex; gap:8px; padding:7px 0; font-size:13px; line-height:1.5; color:#4f5680; }
+.how-list li::before { content:counter(guide) "."; font-weight:800; color:#634ed4; min-width:18px; }
+body:not(.light) .accordion-title { color:#cbd3ff; }
+body:not(.light) .accordion-chevron,.how-list li::before { color:#aebcff; }
+body:not(.light) .how-list li { color:#c4c9e6; }
+.connected-bar { display:none; align-items:center; gap:9px; margin-bottom:18px; padding:13px 15px; border:1px solid #bfcaff; border-radius:13px; background:#eef2ff; color:#4c5fca; font-size:13px; font-weight:800; line-height:1.5; word-break:break-word; }
+body:not(.light) .connected-bar { background:#1b2550; border-color:#3f52a3; color:#b8c5ff; }
+.connected-bar.show { display:flex; }
+.tabs { display:flex; gap:10px; }
+.tab { flex:1; min-height:40px; display:inline-flex; align-items:center; justify-content:center; gap:7px; border:1px solid var(--border); border-radius:11px; background:var(--surface-2); color:var(--text-2); font:700 13px Inter,sans-serif; cursor:pointer; transition:.2s; }
+.tab.active { border-color:transparent; color:#fff; background:linear-gradient(135deg,#617eff,#7048d9); box-shadow:0 6px 14px rgba(91,78,211,.18); }
+.groups { margin-bottom:0; }
+.group-picker { position:relative; }
+.group-picker-toggle { width:100%; min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 13px; background:var(--surface-2); border:1px solid var(--border); border-radius:11px; color:var(--text); font:13px Inter,sans-serif; text-align:left; cursor:pointer; }
+.group-picker-toggle span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.group-picker.open .group-picker-toggle { border-color:var(--accent); border-radius:11px 11px 0 0; }
+.group-picker-menu { display:none; max-height:190px; overflow-y:auto; padding:4px; background:var(--surface-2); border:1px solid var(--accent); border-top:0; border-radius:0 0 11px 11px; }
+.group-picker.open .group-picker-menu { display:block; }
+.group-option { width:100%; min-height:38px; padding:9px 10px; border:0; border-bottom:1px solid var(--border); background:transparent; color:var(--text); font:13px Inter,sans-serif; text-align:left; cursor:pointer; }
+.group-option:hover { background:var(--accent-soft); color:var(--accent-strong); }
+.view-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+.view-title { display:flex; align-items:center; gap:10px; min-width:0; }
+.view-title i { color:var(--accent); font-size:16px; }
+.view-title h2 { font-size:20px; font-weight:800; }
+.tasks-outer-card { width:100%; padding:24px; margin-bottom:18px; }
+#tasksContainer { display:flex; flex-direction:column; gap:14px; }
+.task-card { width:100%; background:var(--surface-2); border:1px solid var(--border); border-left:5px solid #6f5be6; border-radius:16px; padding:21px; box-shadow:0 8px 20px rgba(31,35,126,.1); animation:fadeIn .25s ease; }
+.task-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.task-name { color:var(--text); font-size:17px; font-weight:800; word-break:break-word; }
+.task-key-sub { margin-top:4px; font-size:11px; color:#8b92ad; }
+.task-state { flex-shrink:0; display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:16px; font-size:11px; font-weight:800; letter-spacing:.4px; }
+.task-state.running { color:#16965a; background:#e8fff2; border:1px solid #b9f1d2; }
+.task-state.stopped { color:#d9365e; background:#fff0f4; border:1px solid #ffc5d3; }
+.dot { width:7px; height:7px; border-radius:50%; background:currentColor; box-shadow:0 0 5px currentColor; }
+.task-state.running .dot { animation:pulse 1.6s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+.task-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:15px; }
+.btn-view,.btn-stop-task { padding:10px 22px; border:0; border-radius:20px; color:#fff; font:800 13px Inter,sans-serif; cursor:pointer; transition:.2s; }
+.btn-view { background:linear-gradient(135deg,#5e7fff,#6656dd); box-shadow:0 6px 13px rgba(84,96,216,.2); }
+.btn-stop-task { background:linear-gradient(135deg,#f14d74,#d92d58); box-shadow:0 6px 13px rgba(217,45,89,.18); }
+.btn-view:hover,.btn-stop-task:hover { transform:translateY(-1px); filter:brightness(1.04); }
+.task-owner-note { display:inline-flex; align-items:center; gap:7px; padding:10px 16px; border-radius:20px; color:var(--text-2); background:var(--surface-2); font:700 12px Inter,sans-serif; }
+.task-detail-body { display:none; margin-top:14px; }
+.task-detail-body.show { display:block; animation:fadeIn .25s ease; }
+.task-rows { display:flex; flex-direction:column; gap:10px; }
+.task-row { display:flex; align-items:flex-start; gap:11px; padding:12px 13px; background:var(--surface); border:1px solid var(--border); border-radius:11px; line-height:1.5; }
+.task-row > div { min-width:0; flex:1; }
+.task-row > i { width:20px; flex-shrink:0; margin-top:3px; text-align:center; color:#6d72c9; }
+.row-label { font-size:11px; color:#9299b5; text-transform:uppercase; letter-spacing:.4px; font-weight:700; margin-bottom:3px; }
+.row-value { font-size:13px; color:var(--text); font-weight:800; word-break:break-word; }
+.row-value.green { color:#15945b; }
+.row-value.red { color:#d9365e; }
+.task-last-message-wrap { max-height:0; overflow:hidden; opacity:0; transition:max-height .3s ease, opacity .3s ease; }
+.task-last-message-wrap.show { max-height:900px; opacity:1; }
+.task-last-message { display:flex; align-items:flex-start; gap:11px; margin-top:15px; padding:13px 14px; background:var(--surface); border:1px solid var(--border); border-radius:12px; line-height:1.5; }
+.task-last-message > i { width:20px; flex-shrink:0; margin-top:3px; text-align:center; color:#6d72c9; }
+.task-last-message > div { min-width:0; flex:1; }
+.process-indicator.running { color:#15945b; }
+.process-indicator.stopped { color:#d9365e; }
+.empty { text-align:center; padding:36px 18px; color:var(--text-3); }
+.empty i { font-size:30px; margin-bottom:10px; opacity:.55; }
+.empty p { font-size:13px; }
+.preview { display:none; margin-top:12px; padding:10px; border:1px solid var(--border); border-radius:11px; background:var(--surface-2); text-align:center; }
+.preview.show { display:block; }
+.preview img,.preview video,.preview audio { max-width:100%; max-height:210px; border-radius:8px; }
+.preview-label { color:var(--text-2); font-size:11px; margin-top:6px; word-break:break-word; }
+.upload-count { margin-top:7px; color:#15945b; font-size:12px; font-weight:800; line-height:1.4; }
+.consent { display:flex; align-items:flex-start; gap:9px; margin:3px 0 16px; color:var(--text-2); font-size:12px; line-height:1.5; }
+.consent input { width:17px; min-height:17px; margin-top:1px; accent-color:var(--accent); }
+.field.compact-field { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+.compact-field > .field-label,.compact-field > .field-label.label-with-icon { flex:0 0 132px; margin-bottom:0; align-items:center; }
+.compact-field > .field-label i { margin-top:0; }
+.compact-control { flex:1 1 auto; min-width:0; }
+.compact-control .field-hint { margin:6px 0 0; }
+.target-type-picker { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:6px; margin:0; }
+.target-type-option { min-height:42px; padding:8px 7px; display:flex; flex-direction:row; align-items:center; justify-content:center; gap:6px; border:1px solid var(--border); border-radius:10px; background:var(--surface-2); color:var(--text-2); font:800 11px Inter,sans-serif; cursor:pointer; transition:.2s; text-align:center; }
+.target-type-option i { font-size:14px; color:var(--text-3); }
+.target-type-option:hover { border-color:var(--accent); color:var(--text); }
+.target-type-option.active { border-color:#8494ff; color:var(--accent-strong); background:var(--accent-soft); box-shadow:0 0 0 3px rgba(83,109,254,.08); }
+.target-type-option.active i { color:var(--accent); }
+.uid-field { position:relative; }
+.uid-field input[readonly] { color:var(--accent-strong); font-weight:800; }
+.upload-list { display:flex; flex-direction:column; gap:7px; max-height:260px; overflow-y:auto; margin-top:10px; color:var(--text-2); font-size:11px; line-height:1.4; word-break:break-word; }
+.upload-item { display:flex; align-items:center; gap:9px; padding:8px 10px; border:1px solid var(--border); border-radius:10px; background:var(--surface); text-align:left; }
+.upload-item i { width:17px; color:var(--accent); text-align:center; flex:0 0 17px; }
+.upload-item span { min-width:0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.upload-size { flex:0 0 auto; color:var(--text-3); white-space:nowrap; }
+.media-preview-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); max-height:380px; overflow-y:auto; gap:9px; margin-top:10px; }
+.media-preview-item { min-width:0; padding:7px; border:1px solid var(--border); border-radius:10px; background:var(--surface); }
+.media-preview-item img,.media-preview-item video,.media-preview-item audio { display:block; width:100%; max-height:150px; border-radius:7px; object-fit:contain; background:#11152a; }
+.media-preview-item audio { min-height:36px; margin-top:48px; }
+.media-preview-name { margin-top:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-2); font-size:10px; }
+.upload-progress { display:none; margin-top:12px; }
+.upload-progress.show { display:block; }
+.upload-progress-head { display:flex; justify-content:space-between; gap:10px; color:var(--text-2); font-size:11px; font-weight:700; }
+.upload-progress-track { height:8px; margin-top:7px; overflow:hidden; border-radius:99px; background:var(--surface-3); }
+.upload-progress-bar { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#5f7fff,#9d4bd8); transition:width .15s ease; }
+[hidden] { display:none!important; }
+.toast-container { position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:9999; display:flex; flex-direction:column; gap:10px; width:min(420px,calc(100vw - 28px)); }
+.toast { display:flex; align-items:center; gap:9px; padding:12px 14px; border-radius:12px; font-size:13px; font-weight:700; line-height:1.4; background:var(--surface); border:1px solid var(--border); box-shadow:0 14px 32px rgba(26,28,91,.25); animation:slideDown .25s ease; }
+.toast.success { color:#15945b; border-color:#b9f1d2; }
+.toast.error { color:#d9365e; border-color:#ffc5d3; }
+.toast.info { color:#536dfe; border-color:#cbd4ff; }
+@keyframes slideDown { from { transform:translateY(-14px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+/* ===== Custom modals (stop confirm + stop success) ===== */
+.modal-overlay {
+  position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center;
+  padding:20px; background:rgba(10,12,34,.62); backdrop-filter:blur(6px);
+}
+.modal-overlay.show { display:flex; animation:overlayIn .2s ease; }
+@keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
+.modal-box {
+  position:relative; width:min(400px,100%); padding:30px 26px 26px; text-align:center; border-radius:24px;
+  background:var(--surface); border:1px solid var(--border);
+  box-shadow:0 30px 70px rgba(12,14,52,.45), inset 0 1px 0 rgba(255,255,255,.35);
+  animation:modalPop .32s cubic-bezier(.2,.9,.28,1.2);
+}
+body:not(.light) .modal-box { background:linear-gradient(160deg,rgba(43,42,102,.96),rgba(30,26,66,.96)); }
+body.light .modal-box { background:linear-gradient(160deg,#ffffff,#f6f7ff); }
+@keyframes modalPop { from { opacity:0; transform:translateY(18px) scale(.92); } to { opacity:1; transform:translateY(0) scale(1); } }
+.modal-title { font-size:21px; font-weight:900; letter-spacing:-.3px; color:var(--text); line-height:1.35; }
+.modal-text { margin-top:11px; font-size:13.5px; font-weight:600; line-height:1.65; color:var(--text-2); }
+.modal-actions { display:flex; gap:11px; margin-top:22px; }
+.modal-btn {
+  flex:1 1 auto; min-height:48px; padding:13px 20px; display:inline-flex; align-items:center; justify-content:center;
+  gap:8px; border:0; border-radius:14px; font:900 14px Inter,sans-serif; cursor:pointer; transition:.2s;
+}
+.modal-btn:hover { transform:translateY(-1px); filter:brightness(1.05); }
+.modal-btn.ghost { background:var(--surface-2); color:var(--text); border:1px solid var(--border); }
+.modal-btn.danger { background:linear-gradient(135deg,#f45176,#d92d59); color:#fff; box-shadow:0 10px 22px rgba(217,45,89,.28); }
+.modal-btn.ok-btn {
+  width:100%; margin-top:24px; min-height:52px; font-size:15px; letter-spacing:.4px;
+  background:linear-gradient(135deg,#5f7fff 0%,#7b4de0 55%,#9d4bd8 100%); color:#fff;
+  box-shadow:0 14px 30px rgba(105,79,224,.4);
+}
+.modal-icon.warn {
+  width:64px; height:64px; margin:0 auto 16px; display:flex; align-items:center; justify-content:center;
+  border-radius:50%; font-size:26px; color:#fff; background:linear-gradient(135deg,#f97a5e,#e93662);
+  box-shadow:0 14px 28px rgba(233,54,98,.32);
+}
+.success-check-wrap { position:relative; width:110px; height:110px; margin:0 auto 6px; }
+.success-check {
+  position:absolute; inset:14px; display:flex; align-items:center; justify-content:center; border-radius:50%;
+  font-size:52px; color:#22c55e; background:radial-gradient(circle at 50% 40%,rgba(34,197,94,.22),rgba(34,197,94,.06));
+  box-shadow:0 0 0 6px rgba(34,197,94,.12), 0 16px 34px rgba(21,148,91,.28);
+  animation:checkPop .5s cubic-bezier(.2,.9,.28,1.5);
+}
+@keyframes checkPop { 0% { opacity:0; transform:scale(.3) rotate(-25deg); } 60% { transform:scale(1.12) rotate(4deg); } 100% { opacity:1; transform:scale(1) rotate(0); } }
+.confetti-layer { position:absolute; inset:-14px; pointer-events:none; overflow:visible; }
+.confetti-piece {
+  position:absolute; top:50%; left:50%; width:7px; height:12px; border-radius:2px; opacity:0;
+  animation:confettiFly 1.15s ease-out forwards;
+}
+@keyframes confettiFly {
+  0% { opacity:0; transform:translate(-50%,-50%) scale(.4) rotate(0deg); }
+  18% { opacity:1; }
+  100% { opacity:0; transform:translate(calc(-50% + var(--cx)),calc(-50% + var(--cy))) scale(1) rotate(var(--cr)); }
+}
+.stop-emoji { display:inline-block; margin-left:6px; font-size:24px; line-height:1; filter:drop-shadow(0 4px 8px rgba(217,45,89,.4)); animation:stopThrob 1.8s ease-in-out infinite; }
+@keyframes stopThrob { 0%,100% { transform:scale(1); } 50% { transform:scale(1.14); } }
+@media(max-width:620px) {
+  .field.compact-field { flex-direction:column; align-items:stretch; gap:7px; }
+  .compact-field > .field-label,.compact-field > .field-label.label-with-icon { flex:none; }
+}
+@media(max-width:500px) {
+  .app{padding:18px 14px 60px}.nav-action{padding:10px 12px;font-size:12px}
+  #themeToggle{padding:10px 12px}.card{padding:20px;border-radius:17px}.step-line{width:34px}.task-card{padding:17px}
+  .btn-view,.btn-stop-task{flex:1 1 auto;padding:10px 14px}.task-head{flex-direction:column}.task-state{align-self:flex-start}
+  .target-type-picker{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.target-type-option{min-height:38px;font-size:10px;padding:7px 5px}
+  .target-type-option i{font-size:13px}
+  .modal-box{padding:26px 20px 22px;border-radius:20px}.modal-title{font-size:19px}
+  .success-check-wrap{width:96px;height:96px}.success-check{font-size:44px}
+  .modal-actions{flex-direction:column}
+}
+</style>
+  <meta data-mgx-overview="og:image" property="og:image" content="https://public-frontend-1300249583.cos.ap-nanjing.myqcloud.com/commonfile/DefaultAppLogo.png" />
+  <meta data-mgx-overview="twitter:image" name="twitter:image" content="https://public-frontend-1300249583.cos.ap-nanjing.myqcloud.com/commonfile/DefaultAppLogo.png" />
+  <link data-mgx-overview="icon" rel="icon" href="https://public-frontend-1300249583.cos.ap-nanjing.myqcloud.com/commonfile/DefaultAppLogo.png" />
+</head>
+<body class="light">
+<div class="toast-container" id="toastContainer"></div>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="brand-logo"><i class="fab fa-whatsapp"></i></div>
+      <div class="brand-text"><h1>WhatsApp / tool :)</h1><p>WhatsApp Consent Messaging</p></div>
+    </div>
+    <nav class="top-nav">
+      <div class="nav-tabs">
+        <button class="nav-action active" data-view="create" type="button"><i class="fas fa-circle-plus"></i><span>Create New Tasks</span></button>
+        <button class="nav-action" data-view="tasks" type="button"><span>Active Tasks</span><span class="nav-status" id="tasksDot"></span></button>
+      </div>
+      <button class="nav-action" id="themeToggle" type="button"><span id="themeIcon">☀️</span><span id="themeLabel">Light</span></button>
+    </nav>
+  </header>
+
+  <main class="view active" id="view-create">
+    <div class="stepper">
+      <div class="step active" data-step="1"><div class="step-circle">1</div><div class="step-label">Connect</div></div>
+      <div class="step-line" data-line="1"></div>
+      <div class="step" data-step="2"><div class="step-circle">2</div><div class="step-label">Configure</div></div>
+      <div class="step-line" data-line="2"></div>
+      <div class="step" data-step="3"><div class="step-circle">3</div><div class="step-label">Launch</div></div>
+    </div>
+
+    <section class="card" id="loginCard">
+      <div class="card-title"><i class="fas fa-link"></i><h2>Step 1 — Connect WhatsApp</h2></div>
+      <p class="card-sub">Connect your WhatsApp using the original Baileys pairing-code flow.</p>
+      <div class="field">
+        <label class="field-label" for="phoneNumber">Your WhatsApp Number</label>
+        <p class="field-hint">Country code included, digits only. Example: 919876543210</p>
+        <input type="tel" id="phoneNumber" placeholder="e.g. 919876543210" inputmode="numeric" />
+      </div>
+      <button class="btn btn-primary" id="loginBtn" type="button"><i class="fas fa-qrcode"></i> GET PAIRING CODE</button>
+      <div class="pairing-box" id="pairingBox">
+        <p class="pairing-hint">WhatsApp → Linked Devices → Link with Phone Number</p>
+        <div class="pairing-code-row"><div class="pairing-code" id="pairingCode">----</div><button class="btn-outline copy-code-btn" id="copyPairingBtn" type="button" disabled><i class="fas fa-copy"></i><span>Copy</span></button></div>
+        <p class="pairing-hint">Session Key: <strong id="sessionKeyDisplay">—</strong></p>
+        <div class="pairing-wait"><span class="spinner"></span><span id="pairingStatus">Waiting for device to link…</span></div>
+        <button class="btn-outline" id="newCodeBtn" type="button" style="margin-top:13px">GENERATE FRESH CODE</button>
+      </div>
+    </section>
+
+    <section class="card accordion open how-to-card" id="howToCard">
+      <button class="accordion-head" id="howToToggle" type="button"><span class="accordion-title">📱 How to use:</span><i class="fas fa-chevron-down accordion-chevron"></i></button>
+      <ol class="how-list">
+        <li><span>Enter your phone number with country code</span></li>
+        <li><span>Get the pairing code and link the device immediately</span></li>
+        <li><span>Choose a group or opted-in number and configure the media</span></li>
+         <li><span>Start a consent reminder task and monitor it live</span></li>
+      </ol>
+    </section>
+
+    <div class="connected-bar" id="connectedBar"><i class="fas fa-circle-check"></i><span>WhatsApp Connected — <strong id="connectedKeyDisplay">—</strong> · <span id="connectedNumberDisplay">—</span></span></div>
+
+    <section class="card locked" id="targetCard">
+      <div class="card-title"><i class="fas fa-crosshairs"></i><h2>Step 2 — Task Setup</h2></div>
+      <p class="card-sub">Choose a target type first, then fill only the controls needed for that message.</p>
+
+      <div class="field compact-field">
+        <span class="field-label label-with-icon"><i class="fas fa-layer-group"></i><span>Target Type</span></span>
+        <div class="compact-control">
+          <div class="target-type-picker" id="targetTypePicker" role="radiogroup" aria-label="Target Type">
+            <button class="target-type-option active" data-target-type="simple" type="button" role="radio" aria-checked="true"><i class="fas fa-comment-dots"></i><span>Simple Msg</span></button>
+            <button class="target-type-option" data-target-type="audio" type="button" role="radio" aria-checked="false"><i class="fas fa-music"></i><span>Audio</span></button>
+            <button class="target-type-option" data-target-type="video" type="button" role="radio" aria-checked="false"><i class="fas fa-video"></i><span>Video</span></button>
+            <button class="target-type-option" data-target-type="image" type="button" role="radio" aria-checked="false"><i class="fas fa-image"></i><span>Image</span></button>
+            <button class="target-type-option" data-target-type="sticker" type="button" role="radio" aria-checked="false"><i class="fas fa-tag"></i><span>Sticker</span></button>
+          </div>
+          <select id="targetType" hidden aria-hidden="true"><option value="simple">Simple Message</option><option value="audio">Audio</option><option value="video">Video</option><option value="image">Image</option><option value="sticker">Sticker</option></select>
+        </div>
+      </div>
+
+      <div class="field compact-field"><label class="field-label" for="targetModeSelect">Target</label>
+        <div class="compact-control"><select id="targetModeSelect"><option value="group">Group Target</option><option value="number">📞 Number Target</option></select></div></div>
+      <div id="groupTargetSection"><div class="field"><span class="field-label">Your WhatsApp Groups</span><div class="groups" id="groupsContainer"><div class="empty"><i class="fas fa-users"></i><p>Fetch groups after connecting</p></div></div><button class="btn-outline fetch-groups-btn" id="fetchGroupsBtn" type="button"><i class="fas fa-users"></i> FETCH MY GROUPS</button></div></div>
+      <div id="numberTargetSection" hidden><div class="field"><label class="field-label" for="targetNumber">Target Phone Number</label><p class="field-hint">Country code included, digits only.</p><input type="tel" id="targetNumber" placeholder="e.g. 919876543210" inputmode="numeric"></div></div>
+      <input type="hidden" id="selectedGroupId"><input type="hidden" id="selectedGroupName">
+      <div class="field uid-field"><label class="field-label label-with-icon" for="uidFill"><i class="fas fa-fingerprint"></i><span>UID Fill</span></label><input type="text" id="uidFill" placeholder="Select a group or enter a WhatsApp number" autocomplete="off"><p class="field-hint" id="uidHint">Select a fetched group and its WhatsApp UID will fill automatically.</p></div>
+
+       <div class="field" id="taskNameField"><label class="field-label label-with-icon" for="taskName"><i class="fas fa-tag"></i><span>Task Name</span></label><input type="text" id="taskName" placeholder="e.g. Event reminder" maxlength="80"></div>
+      <div class="field" id="prefixField"><label class="field-label label-with-icon" for="prefix"><i class="fas fa-signature"></i><span>Prefix Name</span></label><input type="text" id="prefix" placeholder="Prefix name"></div>
+
+      <div class="field compact-field" id="messageSourceField"><span class="field-label">Optional Message / Caption Source</span><div class="compact-control"><div class="tabs" id="msgTabs"><button class="tab" data-msgmode="file" type="button"><i class="fas fa-file-lines"></i> .txt File</button><button class="tab" data-msgmode="text" type="button"><i class="fas fa-comment-dots"></i> Text Message</button></div><p class="field-hint">For image and video, leave this empty to send the media without a caption.</p></div></div>
+      <div class="field" id="textMessageSection" hidden><label class="field-label" for="messageText">Messages / optional caption (one per line)</label><textarea id="messageText" placeholder="Your opted-in reminder…"></textarea></div>
+      <div class="field" id="fileMessageSection" hidden><label class="field-label" for="messageFile">Message File (.txt — optional caption, one message per line)</label><input type="file" id="messageFile" accept=".txt"></div>
+        <div class="field" id="mediaField" hidden><label class="field-label" for="mediaFile">Media Upload</label><input type="file" id="mediaFile" multiple><div class="upload-count" id="mediaUploadCount" hidden></div><div class="field-hint" id="mediaHint">Preview appears here before upload.</div><div class="upload-list" id="uploadList"></div><div class="preview" id="mediaPreview"><div class="media-preview-grid" id="mediaPreviewGrid"></div><div class="preview-label" id="previewLabel"></div></div><div class="upload-progress" id="uploadProgress"><div class="upload-progress-head"><span id="uploadProgressLabel">Uploading…</span><span id="uploadProgressValue">0%</span></div><div class="upload-progress-track"><div class="upload-progress-bar" id="uploadProgressBar"></div></div></div></div>
+       <div class="field"><label class="field-label label-with-icon" for="speed"><i class="fas fa-clock"></i><span>Delay Seconds</span></label><input type="number" id="speed" value="30" min="1" max="86400"><p class="field-hint">Messages are sent at the exact delay you choose (1–86400 seconds).</p></div>
+      <label class="consent"><input type="checkbox" id="consent"><span>I confirm this recipient or group has opted in to receive these reminders.</span></label>
+      <button class="btn btn-primary" id="startBtn" type="button"><i class="fas fa-rocket"></i> START TASK</button>
+    </section>
+
+    <section class="card locked" id="messageCard"><div class="success-panel" style="text-align:center;padding:4px 0 18px"><div style="color:#4ade80;font-size:40px;margin-bottom:10px"><i class="fas fa-circle-check"></i></div><h2 style="font-size:20px;color:#4ade80">Task Started Successfully!</h2><p class="card-sub">Your task is now visible in Active Tasks.</p></div><div id="successDetails"></div><button class="btn-outline fetch-groups-btn" id="viewActiveTasksBtn" type="button"><i class="fas fa-list-check"></i> VIEW ACTIVE TASKS</button></section>
+  </main>
+
+  <main class="view" id="view-tasks">
+    <section class="card tasks-outer-card">
+      <div class="view-head"><div class="view-title"><i class="fas fa-list-check"></i><h2>Active Tasks</h2></div><button class="btn-outline" id="refreshTasksBtn" type="button"><i class="fas fa-rotate"></i> Refresh</button></div>
+      <div id="tasksContainer"><div class="empty"><i class="fas fa-inbox"></i><p>No running tasks</p></div></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-overlay" id="stopConfirmOverlay" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="stopConfirmTitle">
+    <div class="modal-icon warn"><i class="fas fa-triangle-exclamation"></i></div>
+    <h3 class="modal-title" id="stopConfirmTitle">Stop This Task?</h3>
+    <p class="modal-text">Stop this task, logout WhatsApp, and remove the task?</p>
+    <div class="modal-actions">
+      <button class="modal-btn ghost" id="stopCancelBtn" type="button">Cancel</button>
+      <button class="modal-btn danger" id="stopConfirmBtn" type="button"><i class="fas fa-stop"></i> Stop Task</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="stopSuccessOverlay" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="stopSuccessTitle">
+    <div class="success-check-wrap">
+      <div class="confetti-layer" id="confettiLayer"></div>
+      <div class="success-check"><i class="fas fa-circle-check"></i></div>
+    </div>
+    <h3 class="modal-title" id="stopSuccessTitle">Task Stopped Successfully <span class="stop-emoji">🛑</span></h3>
+    <p class="modal-text">The task has been stopped,<br>WhatsApp logged out, and the task removed.</p>
+    <button class="modal-btn ok-btn" id="stopSuccessOkBtn" type="button">OK</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+const $ = (id) => document.getElementById(id);
+const appState = { clientId:'', sessionId:'', session:null, groups:[], tasks:[], msgMode:'', targetMode:'group', openTasks:{}, lastTargetType:'simple', previewUrls:[] };
+let sessionTimer, taskStream;
+const THEME_KEY = 'messagehub-theme';
+const esc = (text) => String(text ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(message, type='info') {
+  const el = document.createElement('div'); el.className = 'toast ' + type;
+  const icon = type === 'success' ? 'circle-check' : type === 'error' ? 'circle-exclamation' : 'circle-info';
+  el.innerHTML = '<i class="fas fa-' + icon + '"></i><span>' + esc(message) + '</span>';
+  $('toastContainer').appendChild(el); setTimeout(() => el.remove(), 3800);
+}
+async function api(url, options={}) {
+  options.headers = { ...(options.headers || {}), 'x-client-id': appState.clientId };
+  const res = await fetch(url, options); const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status)); return data;
+}
+function fmtDate(value) { if (!value) return '—'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+function fmtUptime(seconds) {
+  let total = Math.max(0, Number(seconds) || 0); const d = Math.floor(total / 86400); total %= 86400;
+  const h = Math.floor(total / 3600); total %= 3600; const m = Math.floor(total / 60); const s = total % 60;
+  return d + 'd ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+function fmtBytes(bytes) {
+  const value = Number(bytes) || 0;
+  if (value < 1024) return value + ' B';
+  if (value < 1024 * 1024) return (value / 1024).toFixed(1) + ' KB';
+  if (value < 1024 * 1024 * 1024) return (value / (1024 * 1024)).toFixed(1) + ' MB';
+  return (value / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+}
+function formatPairingCode(value) {
+  const raw = String(value || '').replace(/[^a-z0-9]/gi, '').toUpperCase();
+  if (!raw) return '----';
+  if (raw.length <= 4) return raw;
+  if (raw.length === 8) return raw.slice(0, 4) + '-' + raw.slice(4);
+  const split = Math.ceil(raw.length / 2);
+  return raw.slice(0, split) + '-' + raw.slice(split);
+}
+function setUploadProgress(percent, label) {
+  const value = Math.max(0, Math.min(100, Math.round(percent)));
+  $('uploadProgress').classList.toggle('show', value > 0 && value < 100);
+  $('uploadProgressBar').style.width = value + '%';
+  $('uploadProgressValue').textContent = value + '%';
+  if (label) $('uploadProgressLabel').textContent = label;
+}
+function uploadTask(form, onProgress) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open('POST', '/api/tasks');
+    request.setRequestHeader('x-client-id', appState.clientId);
+    request.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress(event.loaded / event.total * 100);
+    };
+    request.onerror = () => reject(new Error('Upload failed. Check your connection and try again.'));
+    request.ontimeout = () => reject(new Error('Upload timed out. Please try again.'));
+    request.onload = () => {
+      let data = {};
+      try { data = JSON.parse(request.responseText || '{}'); } catch {}
+      if (request.status >= 200 && request.status < 300) resolve(data);
+      else reject(new Error(data.error || 'HTTP ' + request.status));
+    };
+    request.send(form);
+  });
+}
+function setStep(n) {
+  document.querySelectorAll('.step').forEach((el) => { const step = Number(el.dataset.step); el.classList.toggle('active',step === n); el.classList.toggle('done',step < n); });
+  document.querySelectorAll('.step-line').forEach((el) => el.classList.toggle('done',Number(el.dataset.line) < n));
+}
+function showView(view) {
+  document.querySelectorAll('.nav-action[data-view]').forEach((b) => b.classList.toggle('active',b.dataset.view === view));
+  $('view-create').classList.toggle('active',view === 'create'); $('view-tasks').classList.toggle('active',view === 'tasks');
+  if (view === 'tasks') renderTasks();
+}
+function renderSession(session) {
+  appState.session = session; const connected = session.status === 'connected';
+  $('pairingBox').classList.toggle('show', !connected);
+  $('pairingCode').textContent = session.pairingCode ? formatPairingCode(session.pairingCode) : (connected ? 'CONNECTED' : '----');
+  $('pairingCode').dataset.rawCode = session.pairingCode || '';
+  $('copyPairingBtn').disabled = !session.pairingCode || connected;
+  $('sessionKeyDisplay').textContent = session.key || '—';
+  $('pairingStatus').textContent = session.lastError || (connected ? 'Device linked successfully.' : session.status + ' — enter the code promptly.');
+  $('connectedBar').classList.toggle('show',connected); $('connectedKeyDisplay').textContent = session.key || '—'; $('connectedNumberDisplay').textContent = session.connectedNumber ? '+' + session.connectedNumber : '';
+  $('loginCard').classList.toggle('setup-hidden',connected); $('howToCard').classList.toggle('setup-hidden',connected);
+  $('targetCard').classList.toggle('locked',!connected); $('targetCard').classList.toggle('setup-hidden',!connected);
+  if (connected) setStep(2); else setStep(1);
+}
+async function refresh() {
+  try {
+    const [sessions, tasks] = await Promise.all([api('/api/sessions'), api('/api/tasks')]);
+    const chosen = sessions.sessions.find((s) => s.id === appState.sessionId) || sessions.sessions[sessions.sessions.length - 1];
+    if (chosen) { appState.sessionId = chosen.id; renderSession(chosen); } else renderTasks(tasks.tasks);
+    appState.tasks = tasks.tasks; renderTasks(tasks.tasks);
+  } catch (error) { toast(error.message,'error'); }
+}
+async function refreshSession() {
+  if (!appState.sessionId) return;
+  try {
+    const data = await api('/api/sessions/' + appState.sessionId);
+    renderSession(data.session);
+  } catch (error) {
+    if (!/Session not found/i.test(error.message)) toast(error.message,'error');
+  }
+}
+function connectTaskStream() {
+  if (!appState.clientId || !window.EventSource) return;
+  taskStream?.close();
+  taskStream = new EventSource('/api/tasks/stream');
+  taskStream.addEventListener('task-stats', (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      updateLiveTaskStats(data.tasks || []);
+    } catch {}
+  });
+}
+ async function bootstrap() {
+   // A full page refresh starts a fresh login context. Existing tasks remain
+   // owned by their original server-side client and continue independently.
+   const res = await fetch('/api/bootstrap?newUser=1');
+  const data = await res.json(); appState.clientId = data.clientId;
+  localStorage.setItem('messagehub-client-id', appState.clientId);
+  await refresh(); connectTaskStream();
+  sessionTimer = setInterval(() => {
+    if (appState.session && appState.session.status !== 'connected') refreshSession();
+  }, 2500);
+}
+document.querySelectorAll('.nav-action[data-view]').forEach((button) => button.onclick = () => showView(button.dataset.view));
+ function setTheme(theme) {
+   const dark = theme === 'dark';
+   document.body.classList.toggle('light', !dark);
+   $('themeIcon').textContent = dark ? '🌙' : '☀️';
+   $('themeLabel').textContent = dark ? 'Dark' : 'Light';
+   localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+ }
+ setTheme(localStorage.getItem(THEME_KEY) || 'light');
+ $('themeToggle').onclick = () => setTheme(document.body.classList.contains('light') ? 'dark' : 'light');
+$('howToToggle').onclick = () => $('howToCard').classList.toggle('open');
+$('phoneNumber').oninput = (e) => e.target.value = e.target.value.replace(/[^\d]/g,'');
+$('copyPairingBtn').onclick = async () => {
+  const raw = $('pairingCode').dataset.rawCode || '';
+  if (!raw) return;
+  try {
+    await navigator.clipboard.writeText(raw);
+  } catch {
+    const helper = document.createElement('textarea');
+    helper.value = raw; helper.style.position = 'fixed'; helper.style.opacity = '0';
+    document.body.appendChild(helper); helper.select(); document.execCommand('copy'); helper.remove();
+  }
+  const label = $('copyPairingBtn').querySelector('span');
+  label.textContent = 'Copied!';
+  setTimeout(() => { label.textContent = 'Copy'; }, 1600);
+};
+$('loginBtn').onclick = async () => {
+  const phone = $('phoneNumber').value.trim(); if (phone.length < 8) return toast('Enter a valid WhatsApp number','error');
+  const button = $('loginBtn'); button.disabled = true; button.innerHTML = '<span class="spinner"></span> Connecting...';
+   try {
+     // A different WhatsApp number is a different user context. Keep the
+     // previous user's server-side task running, but isolate this login.
+     const normalizedPhone = phone.replace(/[^\d]/g,'');
+     if (appState.session?.phone && appState.session.phone !== normalizedPhone) {
+       const bootstrapResponse = await fetch('/api/bootstrap?newUser=1');
+       const bootstrapData = await bootstrapResponse.json();
+       appState.clientId = bootstrapData.clientId;
+       localStorage.setItem('messagehub-client-id', appState.clientId);
+       appState.sessionId = ''; appState.session = null; appState.tasks = [];
+       connectTaskStream();
+     }
+     const data = await api('/api/sessions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone})}); appState.sessionId = data.session.id; renderSession(data.session); toast(data.existing ? 'Session resumed. Waiting for WhatsApp…' : 'Pairing session created.','success'); if (data.existing && data.session.status !== 'connected') await api('/api/sessions/' + appState.sessionId + '/pair',{method:'POST'}); await refresh();
+   }
+  catch (error) { toast(error.message,'error'); } finally { button.disabled = false; button.innerHTML = '<i class="fas fa-qrcode"></i> GET PAIRING CODE'; }
+};
+$('newCodeBtn').onclick = async () => {
+  if (!appState.sessionId) return; const button = $('newCodeBtn'); button.disabled = true;
+  try { await api('/api/sessions/' + appState.sessionId + '/pair',{method:'POST'}); toast('Fresh pairing code generated. Enter it immediately.','success'); await refresh(); }
+  catch (error) { toast(error.message,'error'); } finally { button.disabled = false; }
+};
+$('targetModeSelect').onchange = (e) => {
+  appState.targetMode = e.target.value;
+  const isGroup = appState.targetMode === 'group';
+  $('groupTargetSection').hidden = !isGroup;
+  $('numberTargetSection').hidden = isGroup;
+  $('uidFill').readOnly = isGroup;
+  $('uidFill').value = isGroup ? $('selectedGroupId').value : $('targetNumber').value;
+  $('uidHint').textContent = isGroup ? 'Select a fetched group and its WhatsApp UID will fill automatically.' : 'Enter the recipient number with country code.';
+};
+$('fetchGroupsBtn').onclick = async () => {
+  if (!appState.sessionId) return toast('Connect WhatsApp first','error'); const button = $('fetchGroupsBtn'); button.disabled = true; button.innerHTML = '<span class="spinner"></span> FETCHING GROUPS...';
+  try { const data = await api('/api/sessions/' + appState.sessionId + '/groups'); appState.groups = data.groups || []; renderGroups(); toast(appState.groups.length + ' groups loaded','success'); }
+  catch (error) { toast(error.message,'error'); } finally { button.disabled = false; button.innerHTML = '<i class="fas fa-users"></i> FETCH MY GROUPS'; }
+};
+function renderGroups() {
+  const box = $('groupsContainer'); if (!appState.groups.length) { box.innerHTML = '<div class="empty"><i class="fas fa-users-slash"></i><p>No groups found</p></div>'; return; }
+  box.innerHTML = '<div class="group-picker open" id="groupPicker"><button class="group-picker-toggle" type="button"><span>-- Select a group --</span><i class="fas fa-chevron-down"></i></button><div class="group-picker-menu" id="groupPickerMenu"></div></div>';
+  const picker = $('groupPicker'), label = picker.querySelector('span'); picker.querySelector('.group-picker-toggle').onclick = () => picker.classList.toggle('open');
+  appState.groups.forEach((group) => {
+    const button = document.createElement('button');
+    button.type='button'; button.className='group-option';
+    button.textContent = group.subject + (group.size ? ' (' + group.size + ' members)' : '');
+    button.onclick = () => {
+      $('selectedGroupId').value = group.id; $('selectedGroupName').value = group.subject;
+      $('uidFill').value = group.id; label.textContent = button.textContent;
+      picker.classList.remove('open'); toast('Target group selected: ' + group.subject);
+    };
+    $('groupPickerMenu').appendChild(button);
+  });
+}
+$('targetNumber').oninput = (e) => { e.target.value = e.target.value.replace(/[^\d]/g,''); if (appState.targetMode === 'number') $('uidFill').value = e.target.value; };
+function clearMediaPreviews() {
+  appState.previewUrls.forEach((url) => URL.revokeObjectURL(url));
+  appState.previewUrls = [];
+  $('mediaPreviewGrid').innerHTML = '';
+  $('previewLabel').textContent = '';
+}
+function mediaUploadCountLabel(type, count) {
+  const label = type === 'image' ? 'Image' : type === 'video' ? 'Video' : 'Media File';
+  return count + ' ' + label + (count === 1 ? '' : 's') + ' Uploaded';
+}
+function applyTargetType(type) {
+  $('targetType').value = type;
+  document.querySelectorAll('.target-type-option').forEach((button) => {
+    const active = button.dataset.targetType === type;
+    button.classList.toggle('active', active); button.setAttribute('aria-checked', active ? 'true' : 'false');
+  });
+  const media = type !== 'simple', captions = type === 'image' || type === 'video';
+  $('mediaField').hidden = !media;
+  $('messageSourceField').hidden = !(type === 'simple' || captions);
+  $('textMessageSection').hidden = !(type === 'simple' || captions) || appState.msgMode !== 'text';
+  $('fileMessageSection').hidden = !(type === 'simple' || captions) || appState.msgMode !== 'file';
+   $('prefixField').hidden = type === 'audio' || type === 'sticker';
+   $('mediaFile').multiple = type === 'image' || type === 'video' || type === 'sticker';
+   $('mediaFile').accept = type === 'image' ? 'image/*' : type === 'video' ? 'video/*' : type === 'audio' ? 'audio/*' : type === 'sticker' ? '.webp,image/webp' : '';
+  const typeChanged = appState.lastTargetType !== type;
+  if (typeChanged) $('mediaFile').value = '';
+   $('mediaHint').textContent = type === 'image' ? 'Select as many images as needed. Only the upload count is shown.' : type === 'video' ? 'Select as many videos as needed, up to 512 MB each. Only the upload count is shown.' : type === 'audio' ? 'Audio is sent as a normal WhatsApp audio message.' : type === 'sticker' ? 'Select as many valid WebP stickers as needed (512 KB max each).' : 'The selected media will be previewed before sending.';
+   if (typeChanged) { $('mediaFile').value = ''; $('mediaUploadCount').hidden = true; $('mediaUploadCount').textContent = ''; $('mediaPreview').classList.remove('show'); $('uploadList').innerHTML = ''; clearMediaPreviews(); }
+  appState.lastTargetType = type;
+}
+document.querySelectorAll('.target-type-option').forEach((button) => button.onclick = () => applyTargetType(button.dataset.targetType));
+$('msgTabs').onclick = (e) => {
+  const tab = e.target.closest('.tab'); if (!tab) return;
+  const mode = tab.dataset.msgmode;
+  // The message source tabs behave as switches: turning one ON reveals its box,
+  // turning it OFF hides that box again. Nothing is selected by default.
+  appState.msgMode = appState.msgMode === mode ? '' : mode;
+  document.querySelectorAll('#msgTabs .tab').forEach((t) => t.classList.toggle('active',t.dataset.msgmode === appState.msgMode));
+  applyTargetType($('targetType').value);
+};
+$('mediaFile').onchange = () => {
+  const files = [...$('mediaFile').files], type = $('targetType').value;
+   const preview = $('mediaPreview'), list = $('uploadList'), grid = $('mediaPreviewGrid'), count = $('mediaUploadCount');
+   clearMediaPreviews(); list.innerHTML = ''; count.hidden = true; count.textContent = '';
+  if (!files.length) { preview.classList.remove('show'); return; }
+   if (type === 'image' || type === 'video') {
+     preview.classList.remove('show');
+     count.textContent = mediaUploadCountLabel(type, files.length);
+     count.hidden = false;
+     return;
+   }
+    preview.classList.add('show');
+   $('previewLabel').textContent = files.length + ' ' + type + (files.length === 1 ? ' file' : ' files') + ' selected';
+  files.forEach((file, index) => {
+    const item = document.createElement('div');
+    item.className = 'upload-item';
+    const icon = type === 'video' ? 'fa-video' : type === 'audio' ? 'fa-music' : type === 'sticker' ? 'fa-tag' : 'fa-image';
+    item.innerHTML = '<i class="fas ' + icon + '"></i>';
+    const name = document.createElement('span'); name.textContent = (index + 1) + '. ' + file.name;
+    const size = document.createElement('small'); size.className = 'upload-size'; size.textContent = fmtBytes(file.size);
+    item.append(name, size); list.appendChild(item);
+
+    const url = URL.createObjectURL(file); appState.previewUrls.push(url);
+    const card = document.createElement('div'); card.className = 'media-preview-item';
+    let mediaElement;
+    if (type === 'video') {
+      mediaElement = document.createElement('video');
+      mediaElement.controls = true; mediaElement.muted = true; mediaElement.preload = 'metadata';
+    } else if (type === 'audio') {
+      mediaElement = document.createElement('audio'); mediaElement.controls = true;
+    } else {
+      mediaElement = document.createElement('img'); mediaElement.alt = file.name;
+    }
+    mediaElement.src = url;
+    const caption = document.createElement('div'); caption.className = 'media-preview-name'; caption.textContent = file.name;
+    card.append(mediaElement, caption); grid.appendChild(card);
+  });
+};
+$('startBtn').onclick = async () => {
+  const type = $('targetType').value, mediaFiles = [...$('mediaFile').files], messageFile = $('messageFile').files[0];
+  const target = appState.targetMode === 'group' ? $('uidFill').value : $('uidFill').value.replace(/[^\d]/g,'');
+  if (!appState.sessionId) return toast('Connect WhatsApp first','error');
+  if (!target) return toast('Choose a target first','error');
+  if (appState.targetMode === 'number' && target.length < 8) return toast('Enter a valid WhatsApp number with country code','error');
+   if (!$('taskName').value.trim()) return toast('Enter a task name','error');
+  if (!$('consent').checked) return toast('Confirm recipient consent before starting','error');
+  if (type !== 'simple' && !mediaFiles.length) return toast('Upload the selected media file','error');
+  if (type === 'audio' && mediaFiles.length > 1) return toast('Audio supports one file per task','error');
+  if (type === 'simple' && !appState.msgMode) return toast('Turn on .txt File or Text Message first','error');
+  if (type === 'simple' && appState.msgMode === 'text' && !$('messageText').value.trim()) return toast('Enter a message','error');
+  if (type === 'simple' && appState.msgMode === 'file' && !messageFile) return toast('Upload a message file','error');
+  const allowed = type === 'image'
+    ? mediaFiles.every((file) => file.type.startsWith('image/'))
+    : type === 'video'
+      ? mediaFiles.every((file) => file.type.startsWith('video/'))
+      : type === 'audio'
+        ? mediaFiles[0]?.type.startsWith('audio/')
+        : type === 'sticker'
+          ? mediaFiles.every((file) => file.type === 'image/webp' && /\.webp$/i.test(file.name))
+          : true;
+  if (!allowed) return toast('Choose a valid ' + type + ' file','error');
+  if (mediaFiles.some((file) => file.size > 512 * 1024 * 1024)) return toast('Each media file must be 512 MB or smaller','error');
+  if (type === 'sticker' && mediaFiles.some((file) => file.size > 512 * 1024)) return toast('Each sticker must be 512 KB or smaller','error');
+  if (mediaFiles.reduce((total, file) => total + file.size, 0) > 1024 * 1024 * 1024) return toast('Keep the total media upload under 1 GB','error');
+  const form = new FormData();
+  [['sessionId',appState.sessionId],['targetType',type],['targetJid',target],['targetName',appState.targetMode === 'group' ? $('selectedGroupName').value : '+' + target],['taskName',$('taskName').value],['prefix',$('prefix').value],['delaySec',$('speed').value],['consent','on']].forEach(([key,value]) => form.append(key,value));
+  if (type === 'simple' || type === 'image' || type === 'video') { if (appState.msgMode === 'text' && $('messageText').value.trim()) form.append('messageText',$('messageText').value); if (appState.msgMode === 'file' && messageFile) form.append('messageFile',messageFile); }
+  mediaFiles.forEach((file) => form.append('mediaFile',file));
+  const button = $('startBtn'); button.disabled = true; button.innerHTML = '<span class="spinner"></span> Uploading...'; setUploadProgress(1, 'Uploading media…');
+  try {
+    const data = await uploadTask(form, (percent) => setUploadProgress(percent, 'Uploading media…'));
+    setUploadProgress(100, 'Upload complete');
+    setTimeout(() => setUploadProgress(0), 900);
+    $('successDetails').innerHTML = '<div class="task-row"><i class="fas fa-circle-check"></i><div><div class="row-label">Task</div><div class="row-value">' + esc(data.task.name) + ' started for ' + esc(data.task.targetName) + '</div></div></div>';
+    $('targetCard').classList.add('setup-hidden'); $('messageCard').classList.remove('locked'); setStep(3); toast('Task started successfully','success');
+    const existing = appState.tasks.find((task) => task.id === data.task.id); if (existing) Object.assign(existing,data.task); else appState.tasks.unshift(data.task); renderTasks(appState.tasks);
+  } catch (error) { setUploadProgress(0); toast(error.message,'error'); }
+  finally { button.disabled = false; button.innerHTML = '<i class="fas fa-rocket"></i> START TASK'; }
+};
+function taskUptime(task) { const base = Number(task.uptimeSec) || 0; if (!task.running || !task.startedAt) return base; return base + Math.max(0,Math.floor((Date.now() - Date.parse(task.startedAt))/1000) - base); }
+ function visibleSentCount(task) {
+   const sent = Number(task.messagesSent) || 0;
+   if (task.maxMessages == null) return Math.max(0, sent);
+   const total = Math.max(1, Number(task.maxMessages) || 1);
+   return Math.min(total, Math.max(0, sent));
+ }
+ function sendLimit(task) {
+   return task.maxMessages == null ? '∞' : task.maxMessages;
+ }
+/* ===== Custom modal helpers ===== */
+function openOverlay(id) { const overlay = $(id); overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false'); }
+function closeOverlay(id) { const overlay = $(id); overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }
+// Replaces only the visual style of the existing stop confirmation. The
+// confirmation step itself still happens before the task is stopped.
+function askStopConfirm() {
+  return new Promise((resolve) => {
+    const overlay = $('stopConfirmOverlay'), confirmBtn = $('stopConfirmBtn'), cancelBtn = $('stopCancelBtn');
+    const finish = (result) => {
+      confirmBtn.onclick = null; cancelBtn.onclick = null; overlay.onclick = null;
+      document.removeEventListener('keydown', onKey);
+      closeOverlay('stopConfirmOverlay'); resolve(result);
+    };
+    const onKey = (event) => { if (event.key === 'Escape') finish(false); };
+    confirmBtn.onclick = () => finish(true);
+    cancelBtn.onclick = () => finish(false);
+    overlay.onclick = (event) => { if (event.target === overlay) finish(false); };
+    document.addEventListener('keydown', onKey);
+    openOverlay('stopConfirmOverlay'); confirmBtn.focus();
+  });
+}
+function spawnConfetti() {
+  const layer = $('confettiLayer'); if (!layer) return;
+  layer.innerHTML = '';
+  const colors = ['#22c55e','#5f7fff','#f5c542','#ef4b7c','#9d4bd8','#3ddc97'];
+  for (let i = 0; i < 16; i += 1) {
+    const piece = document.createElement('span');
+    const angle = (Math.PI * 2 * i) / 16 + Math.random() * 0.35;
+    const distance = 52 + Math.random() * 34;
+    piece.className = 'confetti-piece';
+    piece.style.background = colors[i % colors.length];
+    piece.style.setProperty('--cx', Math.cos(angle) * distance + 'px');
+    piece.style.setProperty('--cy', Math.sin(angle) * distance + 'px');
+    piece.style.setProperty('--cr', Math.round(Math.random() * 540 - 270) + 'deg');
+    piece.style.animationDelay = (Math.random() * 0.14).toFixed(2) + 's';
+    layer.appendChild(piece);
+  }
+}
+function showStopSuccess() {
+  spawnConfetti();
+  openOverlay('stopSuccessOverlay');
+  $('stopSuccessOkBtn').focus();
+}
+$('stopSuccessOkBtn').onclick = () => closeOverlay('stopSuccessOverlay');
+$('stopSuccessOverlay').onclick = (event) => { if (event.target === $('stopSuccessOverlay')) closeOverlay('stopSuccessOverlay'); };
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && $('stopSuccessOverlay').classList.contains('show')) closeOverlay('stopSuccessOverlay');
+});
+// Last Message stays collapsed until View Details is pressed. These helpers only
+// animate its expand/collapse; task data and actions are untouched.
+function animateLastMessageOpen(taskId) {
+  const wrap = document.querySelector('[data-last-message="' + taskId + '"]');
+  if (!wrap) return;
+  wrap.style.maxHeight = '0px'; wrap.style.opacity = '0';
+  requestAnimationFrame(() => {
+    wrap.style.maxHeight = wrap.scrollHeight + 'px'; wrap.style.opacity = '1';
+    setTimeout(() => { wrap.style.maxHeight = ''; wrap.style.opacity = ''; }, 340);
+  });
+}
+function collapseLastMessage(taskId, done) {
+  const wrap = document.querySelector('[data-last-message="' + taskId + '"]');
+  if (!wrap) { done(); return; }
+  wrap.style.maxHeight = wrap.scrollHeight + 'px';
+  requestAnimationFrame(() => {
+    wrap.style.maxHeight = '0px'; wrap.style.opacity = '0';
+    setTimeout(done, 300);
+  });
+}
+function renderTasks(tasks = appState.tasks) {
+  appState.tasks = tasks || []; const box = $('tasksContainer'); $('tasksDot').classList.toggle('running',appState.tasks.some((task) => task.running));
+  if (!appState.tasks.length) { box.innerHTML = '<div class="empty"><i class="fas fa-inbox"></i><p>No active tasks</p></div>'; return; }
+  box.innerHTML = appState.tasks.map((task) => {
+     const open = appState.openTasks[task.id], status = task.running ? 'RUNNING' : task.stopped ? 'STOPPED' : task.completed ? 'COMPLETED' : 'STOPPED';
+     const stopAction = '<button class="btn-stop-task" data-stop-task="' + task.id + '" type="button"><i class="fas fa-stop"></i> Stop</button>';
+     return '<article class="task-card"><div class="task-head"><div><div class="task-name">' + esc(task.name) + '</div><div class="task-key-sub">WA key: ' + esc(task.whatsappKey) + ' · Created: ' + esc(fmtDate(task.createdAt)) + '</div></div><div class="task-state ' + (task.running ? 'running' : 'stopped') + '" data-task-state="' + task.id + '"><span class="dot"></span>' + status + '</div></div><div class="task-actions"><button class="btn-view" data-view-task="' + task.id + '" type="button"><i class="fas fa-eye"></i> ' + (open ? 'Hide Details' : 'View Details') + '</button>' + stopAction + '</div><div class="task-detail-body ' + (open ? 'show' : '') + '"><div class="task-rows">' +
+       row('fa-phone-volume','Connected WhatsApp Number',task.connectedNumber ? '+' + task.connectedNumber : '—','green') + row(task.targetType === 'simple' ? 'fa-message' : 'fa-photo-film','Target',task.targetName + ' · ' + task.targetJid) + row('fa-layer-group','Target Type',task.targetType) + row('fa-signature','Prefix Name',task.prefix || '—') + (task.messageFileName ? row('fa-file-lines','Message File',task.messageFileName + (task.messageCount ? ' · ' + task.messageCount + ' messages' : '')) : '') + row('fa-clock','Delay Seconds',task.delaySec + ' seconds') + liveRow('fa-chart-simple','Messages / Items Sent',visibleSentCount(task) + ' / ' + sendLimit(task),'green','data-task-sent="' + task.id + '"') + row('fa-circle-exclamation','Failed Count',task.messagesFailed,'red') + liveRow('fa-stopwatch','Live Uptime',fmtUptime(taskUptime(task)),'green','data-task-uptime="' + task.id + '"') + row('fa-calendar-plus','Task Created',fmtDate(task.createdAt)) + processRow(task) +
+      '</div></div>' + lastMessageBlock(task, open) + '</article>';
+  }).join('');
+ document.querySelectorAll('[data-view-task]').forEach((button) => button.onclick = () => {
+   const key = button.dataset.viewTask;
+   const wasOpen = Boolean(appState.openTasks[key]);
+   if (wasOpen) {
+     appState.openTasks[key] = false;
+     collapseLastMessage(key, () => renderTasks());
+     return;
+   }
+   appState.openTasks[key] = true;
+   renderTasks();
+   animateLastMessageOpen(key);
+ });
+ document.querySelectorAll('[data-stop-task]').forEach((button) => button.onclick = async () => { if (!await askStopConfirm()) return; button.disabled = true; try { const stoppedId = button.dataset.stopTask; await api('/api/tasks/' + stoppedId + '/stop',{method:'POST'}); appState.tasks = appState.tasks.filter((task) => task.id !== stoppedId); renderTasks(); showStopSuccess(); } catch (error) { button.disabled = false; toast(error.message,'error'); } });
+}
+ function row(icon,label,value,color='') { return '<div class="task-row"><i class="fas ' + icon + '"></i><div><div class="row-label">' + label + '</div><div class="row-value ' + color + '">' + esc(value) + '</div></div></div>'; }
+ function lastMessageBlock(task, open) {
+   // Last Message always stays the bottom-most section of the task card and is
+   // revealed only while View Details is active.
+   return '<div class="task-last-message-wrap' + (open ? ' show' : '') + '" data-last-message="' + task.id + '"><div class="task-last-message"><i class="fas fa-message"></i><div><div class="row-label">Last Message</div><div class="row-value">' + esc(task.lastSentMessage || 'Nothing sent yet') + '</div></div></div></div>';
+ }
+ function processRow(task) {
+   const running = Boolean(task.running);
+   return '<div class="task-row"><i class="fas ' + (running ? 'fa-spinner fa-spin process-indicator running' : 'fa-circle-stop process-indicator stopped') + '" data-process-icon="' + task.id + '"></i><div><div class="row-label">Process Running</div><div class="row-value ' + (running ? 'green' : 'red') + '" data-process-value="' + task.id + '">' + (running ? 'Running' : 'Stopped') + '</div></div></div>';
+ }
+function liveRow(icon,label,value,color,attribute) { return '<div class="task-row"><i class="fas ' + icon + '"></i><div><div class="row-label">' + label + '</div><div class="row-value ' + color + '" ' + attribute + '>' + esc(value) + '</div></div></div>'; }
+function updateLiveTaskStats(tasks) {
+   const snapshot = Array.isArray(tasks) ? tasks : [];
+   const incoming = new Map(snapshot.map((task) => [task.id, task]));
+  incoming.forEach((task) => {
+     const sent = document.querySelector('[data-task-sent="' + task.id + '"]');
+    const uptime = document.querySelector('[data-task-uptime="' + task.id + '"]');
+    const local = appState.tasks.find((item) => item.id === task.id);
+     const stateBadge = document.querySelector('[data-task-state="' + task.id + '"]');
+     const processIcon = document.querySelector('[data-process-icon="' + task.id + '"]');
+     const processValue = document.querySelector('[data-process-value="' + task.id + '"]');
+     if (sent) sent.textContent = visibleSentCount(task) + ' / ' + sendLimit(task);
+     if (uptime) uptime.textContent = fmtUptime(taskUptime(task));
+     if (stateBadge) {
+       const status = task.running ? 'RUNNING' : task.stopped ? 'STOPPED' : task.completed ? 'COMPLETED' : 'STOPPED';
+       stateBadge.className = 'task-state ' + (task.running ? 'running' : 'stopped');
+       stateBadge.innerHTML = '<span class="dot"></span>' + status;
+     }
+     if (processIcon) {
+       processIcon.className = 'fas ' + (task.running ? 'fa-spinner fa-spin process-indicator running' : 'fa-circle-stop process-indicator stopped');
+     }
+     if (processValue) {
+       processValue.className = 'row-value ' + (task.running ? 'green' : 'red');
+       processValue.textContent = task.running ? 'Running' : 'Stopped';
+     }
+    if (local) Object.assign(local, task);
+  });
+   const incomingIds = snapshot.map((task) => task.id);
+   const currentIds = appState.tasks.map((task) => task.id);
+   if (incomingIds.length !== currentIds.length || incomingIds.some((taskId, index) => taskId !== currentIds[index])) {
+     // SSE sends complete global snapshots. Re-render when another browser
+     // creates or stops a task so this browser never has a stale task list.
+     renderTasks(snapshot);
+     return;
+   }
+   $('tasksDot').classList.toggle('running', appState.tasks.some((task) => task.running));
+}
+function updateLiveUptimes() {
+  appState.tasks.forEach((task) => {
+    const uptime = document.querySelector('[data-task-uptime="' + task.id + '"]');
+    if (uptime) uptime.textContent = fmtUptime(taskUptime(task));
+  });
+}
+$('refreshTasksBtn').onclick = refresh; $('viewActiveTasksBtn').onclick = () => showView('tasks');
+setInterval(updateLiveUptimes,1000);
+bootstrap().catch((error) => toast(error.message,'error'));
+</script>
+<script src="https://public-frontend-cos.metadl.com/commonfile/appPlugins-atoms-prod-1787917652669.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body>
+</html>
