@@ -1,0 +1,21 @@
+{
+  "name": "knightbot-consent-sender",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Consent-oriented WhatsApp web sender using Baileys",
+  "main": "index.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc.9",
+    "express": "^4.21.2",
+    "jimp": "^1.6.1",
+    "multer": "^2.0.2",
+    "pino": "^9.0.0"
+  }
+}
