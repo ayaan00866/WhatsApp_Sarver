@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Auto Typer</string>
-    <string name="accessibility_service_name">Auto Typer Auto-Type</string>
-    <string name="accessibility_service_description">Allows Auto-Type to find and press a visible Send button only after you start it.</string>
-    <string name="english_us">English (US)</string>
-</resources>
